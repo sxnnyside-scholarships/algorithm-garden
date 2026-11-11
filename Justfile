@@ -3,7 +3,7 @@
 
 set shell := ["bash", "-euo", "pipefail", "-c"]
 
-_julia_env := 'if [ -z "${JULIA_DEPOT_PATH:-}" ] && [ ! -w "${HOME}/.julia" ] 2>/dev/null; then mkdir -p /tmp/ag-julia-depot && export JULIA_DEPOT_PATH=/tmp/ag-julia-depot JULIA_PKG_OFFLINE=true; fi'
+_julia_env := 'if [ -z "${JULIA_DEPOT_PATH:-}" ] && { { [ -e "${HOME}/.julia" ] && [ ! -w "${HOME}/.julia" ]; } || { [ ! -e "${HOME}/.julia" ] && [ ! -w "${HOME}" ]; }; }; then mkdir -p /tmp/ag-julia-depot && export JULIA_DEPOT_PATH=/tmp/ag-julia-depot JULIA_PKG_OFFLINE=true; fi'
 
 # Bootstrap dependencies and install git hooks across all packages
 install:
