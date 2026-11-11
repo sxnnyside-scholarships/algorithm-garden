@@ -40,20 +40,20 @@
     "@codemirror/state": "^6.5.2",
     "@codemirror/view": "^6.36.4",
     "@iconify-json/mingcute": "^1.2.10",
-    "@iconify/vue": "^4.3.0",
-    "pinia": "^3.0.1",
+    "@iconify/vue": "^5.0.5",
+    "pinia": "^4.1.0",
     "vue": "^3.5.13",
-    "vue-router": "^4.5.0"
+    "vue-router": "^5.4.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.0.0",
     "@types/bun": "^1.2.9",
-    "@vitejs/plugin-vue": "^5.2.1",
+    "@vitejs/plugin-vue": "^6.0.10",
     "@vue/test-utils": "^2.4.6",
-    "happy-dom": "^17.4.4",
-    "typescript": "^5.8.2",
-    "vite": "^6.2.0",
-    "vitest": "^3.0.8",
-    "vue-tsc": "^2.2.8"
+    "happy-dom": "^21.0.4",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.6",
+    "vitest": "^5.1.0",
+    "vue-tsc": "^3.3.14"
   }
 }
