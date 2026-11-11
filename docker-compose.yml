@@ -1,0 +1,92 @@
+# Local / self-hosted Docker Compose stack for Algorithm Garden.
+# Multi-service Coolify deployments build api/Dockerfile and web/Dockerfile separately;
+# single-resource Coolify or standalone Docker deployments can use the root Dockerfile.
+
+services:
+  runner:
+    image: ${RUNNER_IMAGE:-algorithm-garden-runner:0.1.0}
+    build:
+      context: ./runner
+      dockerfile: Dockerfile
+    entrypoint: ["/bin/true"]
+    restart: "no"
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    depends_on:
+      runner:
+        condition: service_completed_successfully
+    environment:
+      APP_ENV: ${APP_ENV:-development}
+      HOST: 0.0.0.0
+      PORT: 8080
+      DB_DRIVER: ${DB_DRIVER:-sqlite}
+      SQLITE_PATH: /app/data/algorithm_garden.sqlite
+      DATABASE_URL: ${DATABASE_URL:-postgres://postgres:postgres@postgres:5432/algorithm_garden}
+      AUTH_TOKEN_SECRET: ${AUTH_TOKEN_SECRET:-local-development-secret-change-me-at-least-32b}
+      TOKEN_TTL_SECONDS: ${TOKEN_TTL_SECONDS:-86400}
+      RUNNER_MODE: ${RUNNER_MODE:-docker}
+      RUNNER_IMAGE: ${RUNNER_IMAGE:-algorithm-garden-runner:0.1.0}
+      RUNNER_TIMEOUT_MS: ${RUNNER_TIMEOUT_MS:-5000}
+      RUNNER_MEMORY_LIMIT: ${RUNNER_MEMORY_LIMIT:-256m}
+      RUNNER_CPU_LIMIT: ${RUNNER_CPU_LIMIT:-1.0}
+      RUNNER_PIDS_LIMIT: ${RUNNER_PIDS_LIMIT:-64}
+      RUNNER_MAX_EVENTS: ${RUNNER_MAX_EVENTS:-50000}
+      RUNNER_MAX_STDOUT_BYTES: ${RUNNER_MAX_STDOUT_BYTES:-2097152}
+      RUNNER_POOL_SIZE: ${RUNNER_POOL_SIZE:-2}
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:5173}
+    ports:
+      - "${API_PORT:-8080}:8080"
+    volumes:
+      - garden_data:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    group_add:
+      - "${DOCKER_GID:-0}"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8080/health >/dev/null || exit 1"]
+      interval: 15s
+      timeout: 3s
+      retries: 5
+      start_period: 20s
+
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: ""
+    environment:
+      API_UPSTREAM: http://api:8080
+    ports:
+      - "${WEB_PORT:-5173}:8080"
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8080/healthz >/dev/null || exit 1"]
+      interval: 15s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+  postgres:
+    image: postgres:17.4-alpine
+    profiles: ["postgres"]
+    environment:
+      POSTGRES_DB: algorithm_garden
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    volumes:
+      - garden_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d algorithm_garden"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  garden_data:
+  garden_pg:
+

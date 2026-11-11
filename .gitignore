@@ -1,0 +1,42 @@
+# OS & Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Environment & Secrets
+.env
+.env.*
+!.env.example
+
+# Database & Local Data
+*.sqlite
+*.sqlite3
+*.sqlite-shm
+*.sqlite-wal
+data/
+
+# Julia / Runner artifacts
+runner/sysimage/*.so
+runner/sysimage/*.dylib
+runner/sysimage/*.dll
+*.jl.cov
+*.jl.*.cov
+*.jl.mem
+
+# Web / Bun / Node artifacts
+web/node_modules/
+web/dist/
+web/.vite/
+web/coverage/
+*.tsbuildinfo
+
+# Build & Dist
+dist/
+build/
+tmp/
+RELEASE_NOTES.md
+
+
+# Animoria cache & staged cleanup
+.animoria/

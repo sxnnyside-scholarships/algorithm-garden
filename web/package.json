@@ -1,0 +1,59 @@
+{
+  "name": "algorithm-garden-web",
+  "version": "0.1.0",
+  "description": "Interactive Floral Solarpunk web workspace for Algorithm Garden.",
+  "private": true,
+  "license": "MIT",
+  "author": {
+    "name": "Sxnnyside Scholarships",
+    "url": "https://github.com/sxnnyside-scholarships"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sxnnyside-scholarships/algorithm-garden.git",
+    "directory": "web"
+  },
+  "homepage": "https://github.com/sxnnyside-scholarships/algorithm-garden#readme",
+  "bugs": "https://github.com/sxnnyside-scholarships/algorithm-garden/issues",
+  "type": "module",
+  "packageManager": "bun@1.4.4",
+  "engines": {
+    "bun": ">=1.4.4"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "test": "vitest run",
+    "typecheck": "vue-tsc --noEmit",
+    "lint": "biome lint .",
+    "lint:fix": "biome lint --write .",
+    "format": "biome check --write .",
+    "format:check": "biome format .",
+    "check": "bun run format:check && bun run lint && bun run typecheck && bun run test",
+    "clean": "rm -rf dist .vite coverage"
+  },
+  "dependencies": {
+    "@codemirror/commands": "^6.8.0",
+    "@codemirror/language": "^6.10.8",
+    "@codemirror/legacy-modes": "^6.5.1",
+    "@codemirror/lint": "^6.8.4",
+    "@codemirror/state": "^6.5.2",
+    "@codemirror/view": "^6.36.4",
+    "@iconify-json/mingcute": "^1.2.10",
+    "@iconify/vue": "^4.3.0",
+    "pinia": "^3.0.1",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.0.0",
+    "@types/bun": "^1.2.9",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "@vue/test-utils": "^2.4.6",
+    "happy-dom": "^17.4.4",
+    "typescript": "^5.8.2",
+    "vite": "^6.2.0",
+    "vitest": "^3.0.8",
+    "vue-tsc": "^2.2.8"
+  }
+}

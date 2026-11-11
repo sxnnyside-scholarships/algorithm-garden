@@ -1,0 +1,14 @@
+.git
+.github
+.DS_Store
+data/
+dist/
+build/
+tmp/
+.env
+.env.*
+web/node_modules/
+web/dist/
+web/.vite/
+web/coverage/
+
