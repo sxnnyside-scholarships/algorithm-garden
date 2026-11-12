@@ -12,6 +12,8 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "isolatedModules": true,
+    "erasableSyntaxOnly": true,
+    "noUncheckedSideEffectImports": true,
     "verbatimModuleSyntax": true,
     "skipLibCheck": true,
     "noEmit": true,
